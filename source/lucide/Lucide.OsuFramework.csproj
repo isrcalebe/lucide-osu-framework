@@ -1,9 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Project">
     <TargetFramework>net8.0</TargetFramework>
-    <IncludeContentInPack>true</IncludeContentInPack>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
   <PropertyGroup Label="NuGet">
     <PackageId>Lucide.OsuFramework</PackageId>
