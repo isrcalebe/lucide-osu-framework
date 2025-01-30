@@ -1,0 +1,45 @@
+<Project>
+  <PropertyGroup Label="C#">
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup Label="Code Analysis">
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.3" PrivateAssets="All" />
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)analysis\banned-symbols.txt" />
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)analysis\gamekit.globalconfig" />
+  </ItemGroup>
+  <PropertyGroup Label="Code Analysis">
+    <AnalysisMode>Default</AnalysisMode>
+    <AnalysisModeDesign>Default</AnalysisModeDesign>
+    <AnalysisModeDocumentation>Recommended</AnalysisModeDocumentation>
+    <AnalysisModeGlobalization>Recommended</AnalysisModeGlobalization>
+    <AnalysisModeInteroperability>Recommended</AnalysisModeInteroperability>
+    <AnalysisModeMaintainability>Recommended</AnalysisModeMaintainability>
+    <AnalysisModeNaming>Default</AnalysisModeNaming>
+    <AnalysisModePerformance>Minimum</AnalysisModePerformance>
+    <AnalysisModeReliability>Recommended</AnalysisModeReliability>
+    <AnalysisModeSecurity>Default</AnalysisModeSecurity>
+    <AnalysisModeUsage>Default</AnalysisModeUsage>
+  </PropertyGroup>
+  <ItemGroup Label="Icon and README">
+    <None Include="$(MSBuildThisFileDirectory)\..\.github\assets\nupkg-icon.png"  Visible="false">
+      <Pack>True</Pack>
+      <PackagePath>icon.png</PackagePath>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)\..\.github\README.nuget.md" Visible="false">
+      <Pack>True</Pack>
+      <PackagePath>README.md</PackagePath>
+    </None>
+  </ItemGroup>
+  <PropertyGroup Label="NuGet">
+    <Authors>Israel Calebe</Authors>
+    <Copyright>Copyright (c) 2025 Israel Calebe</Copyright>
+    <Product>Lucide osu!framework</Product>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReleaseNotes>Automated release.</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/isrcalebe/lucide-osu-framework</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/isrcalebe/lucide-osu-framework</RepositoryUrl>
+  </PropertyGroup>
+</Project>

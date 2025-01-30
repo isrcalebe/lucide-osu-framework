@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Additional Items", "Additional Items", "{5C0530DD-BDB5-4D30-8A03-3E6DED0A75F3}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+		..\.gitattributes = ..\.gitattributes
+		Directory.Build.props = Directory.Build.props
+		Lucide.sln.DotSettings = Lucide.sln.DotSettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucide.OsuFramework", "lucide\Lucide.OsuFramework.csproj", "{02CBB958-9E16-45EF-97CB-7BFCD0209B55}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37D3891D-0546-4E77-B062-9947D075366B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucide.OsuFramework.Tests", "tests\lucide\Lucide.OsuFramework.Tests.csproj", "{A38A7485-6FAD-4D53-BA7C-E8FE265AB838}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucide.Build", "lucide-build\Lucide.Build.csproj", "{096EB2F4-E5CF-4149-A11C-542C2C9DD248}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02CBB958-9E16-45EF-97CB-7BFCD0209B55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CBB958-9E16-45EF-97CB-7BFCD0209B55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CBB958-9E16-45EF-97CB-7BFCD0209B55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CBB958-9E16-45EF-97CB-7BFCD0209B55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A38A7485-6FAD-4D53-BA7C-E8FE265AB838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A38A7485-6FAD-4D53-BA7C-E8FE265AB838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A38A7485-6FAD-4D53-BA7C-E8FE265AB838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A38A7485-6FAD-4D53-BA7C-E8FE265AB838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{096EB2F4-E5CF-4149-A11C-542C2C9DD248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{096EB2F4-E5CF-4149-A11C-542C2C9DD248}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{096EB2F4-E5CF-4149-A11C-542C2C9DD248}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{096EB2F4-E5CF-4149-A11C-542C2C9DD248}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A38A7485-6FAD-4D53-BA7C-E8FE265AB838} = {37D3891D-0546-4E77-B062-9947D075366B}
+	EndGlobalSection
+EndGlobal

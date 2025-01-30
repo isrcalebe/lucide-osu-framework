@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Project">
+    <TargetFramework>net8.0</TargetFramework>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+  </PropertyGroup>
+  <PropertyGroup Label="NuGet">
+    <PackageId>Lucide.OsuFramework</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>dotnet-new;templates;osu;framework;lucide;icons</PackageTags>
+    <Title>Lucide osu!framework</Title>
+  </PropertyGroup>
+  <ItemGroup Label="Package References">
+    <PackageReference Include="ppy.osu.Framework" Version="2024.912.0" />
+  </ItemGroup>
+  <ItemGroup Label="Embedded Resources">
+    <EmbeddedResource Include="Resources/**/*" />
+  </ItemGroup>
+  <ItemGroup Label="README">
+    <None Include="$(MSBuildThisFileDirectory)\..\..\.github\README.nuget.md" Visible="false">
+      <Pack>True</Pack>
+      <PackagePath>README.md</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

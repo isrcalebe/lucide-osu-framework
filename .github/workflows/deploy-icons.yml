@@ -1,0 +1,77 @@
+name: Package and NuGet
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  notify_pending_production_deploy:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      -
+        name: Submit pending deployment notification
+        run: |
+          export TITLE="Pending `lucide-osu-framework` Production Deployment: $GITHUB_REF_NAME"
+          export URL="https://github.com/isrcalebe/lucide-osu-framework/actions/runs/$GITHUB_RUN_ID"
+          export DESCRIPTION="Awaiting approval for building NuGet packages for tag $GITHUB_REF_NAME:
+          [View Workflow Run]($URL)"
+          export ACTOR_ICON="https://avatars.githubusercontent.com/u/$GITHUB_ACTOR_ID"
+
+          BODY="$(jq --null-input '{
+            "embeds": [
+              {
+                "title": env.TITLE,
+                "color": 15098112,
+                "description": env.DESCRIPTION,
+                "url": env.URL,
+                "author": {
+                  "name": env.GITHUB_ACTOR,
+                  "icon_url": env.ACTOR_ICON
+                }
+              }
+            ]
+          }')"
+
+          curl \
+            -H "Content-Type: application/json" \
+            -d "$BODY" \
+            "${{ secrets.DISCORD_INFRA_WEBHOOK_URL }}"
+
+  pack:
+    name: Pack (Lucide)
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set artifacts Directory
+        id: artifactsPath
+        run: echo "::set-output name=NUGET_ARTIFACTS::${{github.workspace}}/artifacts"
+
+      - name: Install .NET 8.0.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Generate Lucide Icons
+        continue-on-error: false
+        run: |
+          echo "Generating Lucide Icons for ${{ github.ref_name }}"
+          dotnet run --project source/lucide-build -- fetch-info ${{ github.ref_name }}
+          dotnet run --project source/lucide-build -- generate-icon-usage LucideIcons.cs
+
+
+      - name: Pack Lucide Icons
+        run: dotnet pack -c Release source/lucide /p:Configuration=Release /p:Version=${{ github.ref_name }} /p:GenerateDocumentationFile=true /p:NoDefaultExcludes=true -o ${{steps.artifactsPath.outputs.nuget_artifacts}}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamekit
+          path: ${{steps.artifactsPath.outputs.nuget_artifacts}}/*.nupkg
+
+      - name: Publish packages to NuGet
+        run: dotnet nuget push ${{steps.artifactsPath.outputs.nuget_artifacts}}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
