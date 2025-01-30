@@ -13,9 +13,9 @@ jobs:
       -
         name: Submit pending deployment notification
         run: |
-          export TITLE="Deploying `lucide-osu-framework`: $GITHUB_REF_NAME"
+          export TITLE="Deploying lucide-osu-framework: $GITHUB_REF_NAME"
           export URL="https://github.com/isrcalebe/lucide-osu-framework/actions/runs/$GITHUB_RUN_ID"
-          export DESCRIPTION="A new version of `lucide-osu-framework` is being deployed.
+          export DESCRIPTION="A new version of lucide-osu-framework is being deployed.
           [View Workflow Run]($URL)"
           export ACTOR_ICON="https://avatars.githubusercontent.com/u/$GITHUB_ACTOR_ID"
 
@@ -60,7 +60,7 @@ jobs:
         continue-on-error: false
         run: |
           dotnet run --project source/lucide-build -- fetch-info latest
-          dotnet run --project source/lucide-build -- generate-icon-usage LucideIcons.cs
+          dotnet run --project source/lucide-build -- generate-icon-usage source/lucide
 
 
       - name: Pack Lucide Icons
