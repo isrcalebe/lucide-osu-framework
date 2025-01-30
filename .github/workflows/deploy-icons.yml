@@ -13,9 +13,9 @@ jobs:
       -
         name: Submit pending deployment notification
         run: |
-          export TITLE="Pending `lucide-osu-framework` Production Deployment: $GITHUB_REF_NAME"
+          export TITLE="Deploying `lucide-osu-framework`: $GITHUB_REF_NAME"
           export URL="https://github.com/isrcalebe/lucide-osu-framework/actions/runs/$GITHUB_RUN_ID"
-          export DESCRIPTION="Awaiting approval for building NuGet packages for tag $GITHUB_REF_NAME:
+          export DESCRIPTION="A new version of `lucide-osu-framework` is being deployed.
           [View Workflow Run]($URL)"
           export ACTOR_ICON="https://avatars.githubusercontent.com/u/$GITHUB_ACTOR_ID"
 
@@ -59,8 +59,7 @@ jobs:
       - name: Generate Lucide Icons
         continue-on-error: false
         run: |
-          echo "Generating Lucide Icons for ${{ github.ref_name }}"
-          dotnet run --project source/lucide-build -- fetch-info ${{ github.ref_name }}
+          dotnet run --project source/lucide-build -- fetch-info latest
           dotnet run --project source/lucide-build -- generate-icon-usage LucideIcons.cs
 
 
@@ -70,7 +69,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: gamekit
+          name: lucide-osu-framework
           path: ${{steps.artifactsPath.outputs.nuget_artifacts}}/*.nupkg
 
       - name: Publish packages to NuGet
