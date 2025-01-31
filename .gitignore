@@ -13,12 +13,17 @@
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
+[Dd]ist/
 [Rr]elease/
 [Rr]eleases/
 bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+
+.idea
+
+LucideIcons.cs
 
 # Visual Studio 2015 cache/options directory
 .vs/

@@ -32,7 +32,7 @@ public class GenerateIconUsage : ILucideTask
 
         endDictionary();
 
-        addGetIconUsaGenericgeFn();
+        addGetIconUsageFn();
 
         beginNestedClass("All");
 
@@ -41,6 +41,9 @@ public class GenerateIconUsage : ILucideTask
             var iconNamePascal = icon.Name.Replace("-", "_").Pascalize();
 
             classBuilder.AppendLine();
+            classBuilder.AppendLine("        /// <summary>");
+            classBuilder.AppendLine($"        /// The <see href=\"https://lucide.dev/icons/{icon.Name}\"><c>{icon.Name}</c></see> icon.");
+            classBuilder.AppendLine("        /// </summary>");
             classBuilder.AppendLine($"        public static IconUsage {iconNamePascal} => Get(LucideIcons.IconsUnicode[\"{icon.Name}\"]);");
         }
 
@@ -59,6 +62,9 @@ public class GenerateIconUsage : ILucideTask
 
     private void beginDictionary()
     {
+        classBuilder.AppendLine("    /// <summary>");
+        classBuilder.AppendLine("    /// A dictionary of all Lucide icons and their unicode values.");
+        classBuilder.AppendLine("    /// </summary>");
         classBuilder.AppendLine("    public static IReadOnlyDictionary<string, int> IconsUnicode = new Dictionary<string, int>");
         classBuilder.AppendLine("    {");
     }
@@ -73,15 +79,23 @@ public class GenerateIconUsage : ILucideTask
         classBuilder.AppendLine("    };");
     }
 
-    private void addGetIconUsaGenericgeFn()
+    private void addGetIconUsageFn()
     {
         classBuilder.AppendLine();
+        classBuilder.AppendLine("    /// <summary>");
+        classBuilder.AppendLine("    /// Get an icon usage by unicode value.");
+        classBuilder.AppendLine("    /// </summary>");
+        classBuilder.AppendLine("    /// <param name=\"unicode\">The unicode value of the icon.</param>");
+        classBuilder.AppendLine("    /// <returns>An <see cref=\"IconUsage\"/> instance.</returns>");
         classBuilder.AppendLine($"    public static IconUsage Get(int unicode) => new IconUsage((char)unicode, \"Lucide\").With(weight: \"Regular\");");
         classBuilder.AppendLine();
     }
 
     private void beginNestedClass(string className)
     {
+        classBuilder.AppendLine("    /// <summary>");
+        classBuilder.AppendLine($"    /// A class containing all Lucide icons as <see cref=\"IconUsage\"/> properties.");
+        classBuilder.AppendLine("    /// </summary>");
         classBuilder.AppendLine($"    public static class {className}");
         classBuilder.AppendLine("    {");
     }
