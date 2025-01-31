@@ -1,3 +1,14 @@
+<p align='center'>
+  <a href='https://github.com/isrcalebe/lucide-osu-frameworkit#gh-dark-mode-only' target='_blank' rel='noopener noreferrer'>
+    <img src='./assets/logo-light.svg' alt='isrcalebe/lucide-osu-framework'>
+  </a>
+  <a href='https://github.com/isrcalebe/lucide-osu-framework#gh-light-mode-only' target='_blank' rel='noopener noreferrer'>
+    <img src='./assets/logo-dark.svg' alt='isrcalebe/lucide-osu-framework'>
+  </a>
+</p>
+
+Implementation of the [Lucide Icon Library](https://lucide.dev/) for [osu!framework](https://github.com/ppy/osu-framework) applications.
+
 # Requirements
 
 - A desktop platform with the [.NET 8.0 SDK](https://dotnet.microsoft.com/download) or higher runtime installed.

@@ -6,17 +6,18 @@ on:
       - '*'
 
 jobs:
-  notify_pending_production_deploy:
+  notify_process_deploy:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
       -
-        name: Submit pending deployment notification
+        name: Notify Deployment
         run: |
-          export TITLE="Deploying lucide-osu-framework: $GITHUB_REF_NAME"
+          export TITLE="🚀 Deployment in Progress: lucide-osu-framework ($GITHUB_REF_NAME)"
           export URL="https://github.com/isrcalebe/lucide-osu-framework/actions/runs/$GITHUB_RUN_ID"
-          export DESCRIPTION="A new version of lucide-osu-framework is being deployed.
-          [View Workflow Run]($URL)"
+          export DESCRIPTION="A new deployment for **lucide-osu-framework** has started.
+          Stay tuned for updates!
+          ➜ [View Workflow Run]($URL)"
           export ACTOR_ICON="https://avatars.githubusercontent.com/u/$GITHUB_ACTOR_ID"
 
           BODY="$(jq --null-input '{
@@ -74,3 +75,45 @@ jobs:
 
       - name: Publish packages to NuGet
         run: dotnet nuget push ${{steps.artifactsPath.outputs.nuget_artifacts}}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+  notify_status_deploy:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: always()
+    steps:
+      -
+        name: Notify Deployment Status
+        run: |
+          export TITLE="🚀 Deployment Completed: lucide-osu-framework ($GITHUB_REF_NAME)"
+          export URL="https://github.com/isrcalebe/lucide-osu-framework/actions/runs/$GITHUB_RUN_ID"
+
+          if [ "$GITHUB_JOB" == "success" ]; then
+            export STATUS="✅ Deployment successful!"
+            export COLOR=3066993
+          else
+            export STATUS="❌ Deployment failed. Check logs for details."
+            export COLOR=15158332
+          fi
+
+          export DESCRIPTION="Deployment for **lucide-osu-framework** has finished.\n$STATUS\n➜ [View Workflow Run]($URL)"
+          export ACTOR_ICON="https://avatars.githubusercontent.com/u/$GITHUB_ACTOR_ID"
+
+          BODY="$(jq --null-input '{
+            "embeds": [
+              {
+                "title": env.TITLE,
+                "color": env.COLOR,
+                "description": env.DESCRIPTION,
+                "url": env.URL,
+                "author": {
+                  "name": env.GITHUB_ACTOR,
+                  "icon_url": env.ACTOR_ICON
+                }
+              }
+            ]
+          }')"
+
+          curl \
+            -H "Content-Type: application/json" \
+            -d "$BODY" \
+            "${{ secrets.DISCORD_INFRA_WEBHOOK_URL }}"

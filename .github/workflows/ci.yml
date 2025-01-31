@@ -1,0 +1,62 @@
+on: [push, pull_request]
+name: Continuous Integration
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{matrix.os.fullname}}
+    env:
+      OSU_EXECUTION_MODE: ${{matrix.threadingMode}}
+      OSU_TESTS_LOCAL_HTTPBIN: 1
+    strategy:
+       fail-fast: false
+       matrix:
+          os:
+            - { prettyname: Windows, fullname: windows-latest, configuration: Debug }
+            - { prettyname: macOS, fullname: macos-latest, configuration: Debug }
+            - { prettyname: Linux, fullname: ubuntu-latest, configuration: Debug }
+            - { prettyname: Linux, fullname: ubuntu-latest, configuration: Release }
+          threadingMode: ['SingleThread', 'MultiThreaded']
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install .NET 8.0.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21.9
+
+      - name: Install httpbin
+        run: go install github.com/mccutchen/go-httpbin/v2/cmd/go-httpbin@latest
+
+      - name: Run httpbin
+        run: $HOME/go/bin/go-httpbin &
+        shell: bash
+
+      - name: Build Tools
+        run: |
+            dotnet run --project source/lucide-build -- fetch-info latest
+            dotnet run --project source/lucide-build -- generate-icon-usage source/lucide
+
+      - name: Compile
+        run: dotnet build -c ${{matrix.os.configuration}} source
+
+      - name: Test
+        run: dotnet test $pwd/source/tests/**/*/bin/${{matrix.os.configuration}}/*/*.Tests.dll --no-build --logger "trx;LogFileName=TestResults-${{matrix.os.prettyname}}-${{matrix.threadingMode}}-${{matrix.os.configuration}}.trx" -- NUnit.ConsoleOut=0
+        shell: pwsh
+
+      # Attempt to upload results even if test fails.
+      # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#always
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: lucide-test-results-${{matrix.os.prettyname}}-${{matrix.threadingMode}}-${{matrix.os.configuration}}
+          path: ${{github.workspace}}/TestResults/TestResults-${{matrix.os.prettyname}}-${{matrix.threadingMode}}-${{matrix.os.configuration}}.trx
